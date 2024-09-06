@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Client</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Client</h1>
+        <form action="submit-client.php" method="POST" class="client-form">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+            
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone">
+            
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="4"></textarea>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob">
+            
+            <label for="company">Company Name:</label>
+            <input type="text" id="company" name="company">
+            
+            <label for="notes">Additional Notes:</label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+            
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

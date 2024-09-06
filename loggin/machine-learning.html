@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="machine-learning.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <label>
+        <input type="checkbox">
+        <div class="toggle">
+            <span class="top_line common"></span>
+            <span class="middle_line common"></span>
+            <span class="bottom_line common"></span>
+        </div>
+        <div class="sidebar">
+            <ul class="menu">
+                
+                <li><a href="#" id="machine-learning" onclick="toggleSubMenu()"><h1> Machine Learning</h1></a></li>
+                <div id="submenu" class="hidden">
+
+                    <div class="nav-container">
+                    <li><a href="#"><i class="fa fa-tv"></i> Dashboard </a></li>
+                    <li><a href="#"><i class="fa fa-cogs"></i> Predictions </a></li>
+                    <li><a href="#"><i class="fa fa-history"></i> History </a></li>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </label>
+</body>
+
+
+</html>
+
