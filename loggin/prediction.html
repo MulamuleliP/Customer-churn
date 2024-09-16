@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+
+        .chart-container {
+            width: 500px; /* Adjust width as needed */
+            height: 500px; /* Adjust height as needed */
+            margin: auto;
+        }
+
+    </style>
+</head>
+
+<body x-data="app()" x-init="fetchData()">
+    <h1>Customer Churn Dashboard</h1>
+
+    <div x-show="data.length > 0">
+        <h2>Customer Data</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Age</th>
+                    <th>Credit Score</th>
+                    <th>Tenure</th>
+                    <th>Churn Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="customer in data" :key="customer.customer_id">
+                    <tr>
+                        <td x-text="customer.customer_id"></td>
+                        <td x-text="customer.age"></td>
+                        <td x-text="customer.credit_score"></td>
+                        <td x-text="customer.tenure"></td>
+                        <td x-text="customer.churn === 1 ? 'Churn' : 'Not Churn'"></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <div x-show="loading">Loading...</div>
+
+    <div x-show="data.length > 0">
+        <h2>Churn Prediction Chart</h2>
+        <div class="chart-container">
+            <canvas id="churnChart"></canvas>
+        </div>
+
+        <h2>Tenure vs Customer Type (Histogram)</h2>
+        <canvas id="tenureHistogram" width="400" height="200"></canvas>
+
+        <h2>Total Amount vs Price (Line Graph)</h2>
+        <canvas id="amountVsPrice" width="400" height="200"></canvas>
+
+        <h2>Branch vs Customer Churn (Bar Graph)</h2>
+        <canvas id="branchChurnBar" width="400" height="200"></canvas>
+
+        <h2>Product Category Distribution (Pie Chart)</h2>
+        <div class="chart-container">
+            <canvas id="productCategoryPie"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function app() {
+            return {
+                data: [],
+                loading: true,
+                charts: {},
+
+                fetchData() {
+                    fetch('http://localhost:3730/api/predict-all', {
+                        method: 'POST'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json(); // Directly parse as JSON
+                    })
+                    .then(data => {
+                        this.data = data;
+                        this.loading = false;
+                        this.updateCharts();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        this.loading = false;
+                    });
+                },
+
+                updateCharts() {
+                    this.updateChurnChart();
+                    this.updateTenureHistogram();
+                    this.updateAmountVsPriceLine();
+                    this.updateBranchChurnBar();
+                    this.updateProductCategoryPie();
+                },
+
+                updateChurnChart() {
+                    const churnCount = this.data.filter(customer => customer.churn === 1).length;
+                    const notChurnCount = this.data.length - churnCount;
+
+                    const ctx = document.getElementById('churnChart').getContext('2d');
+
+                    if (this.charts.churn) {
+                        this.charts.churn.destroy();
+                    }
+
+                    this.charts.churn = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Churn', 'Not Churn'],
+                            datasets: [{
+                                label: 'Churn Prediction',
+                                data: [churnCount, notChurnCount],
+                                backgroundColor: ['#ff6384', '#36a2eb'],
+                                borderColor: '#fff',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ' + context.raw;
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+
+                updateTenureHistogram() {
+                    const ctx = document.getElementById('tenureHistogram').getContext('2d');
+
+                    const data = this.data.reduce((acc, customer) => {
+                        acc[customer.customer_type] = acc[customer.customer_type] || [];
+                        acc[customer.customer_type].push(customer.tenure);
+                        return acc;
+                    }, {});
+
+                    const datasets = Object.keys(data).map(type => ({
+                        label: type,
+                        data: data[type],
+                        backgroundColor: type === 'Normal' ? 'rgba(75, 192, 192, 0.5)' : 'rgba(153, 102, 255, 0.5)',
+                        borderColor: type === 'Normal' ? 'rgba(75, 192, 192, 1)' : 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }));
+
+                    if (this.charts.tenureHistogram) {
+                        this.charts.tenureHistogram.destroy();
+                    }
+
+                    this.charts.tenureHistogram = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: Array.from(new Set(this.data.map(customer => customer.tenure))),
+                            datasets: datasets
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.dataset.label + ': ' + context.raw;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+
+                updateAmountVsPriceLine() {
+                    const ctx = document.getElementById('amountVsPrice').getContext('2d');
+
+                    const labels = this.data.map(customer => `ID: ${customer.customer_id}`);
+                    const totalAmountData = this.data.map(customer => customer.total_amount);
+                    const priceData = this.data.map(customer => customer.price);
+
+                    if (this.charts.amountVsPrice) {
+                        this.charts.amountVsPrice.destroy();
+                    }
+
+                    this.charts.amountVsPrice = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Total Amount',
+                                    data: totalAmountData,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    fill: false
+                                },
+                                {
+                                    label: 'Price',
+                                    data: priceData,
+                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.dataset.label + ': ' + context.raw;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+
+                updateBranchChurnBar() {
+                    const ctx = document.getElementById('branchChurnBar').getContext('2d');
+
+                    const branchChurnCount = this.data.reduce((acc, customer) => {
+                        acc[customer.branch] = acc[customer.branch] || { churn: 0, notChurn: 0 };
+                        if (customer.churn === 1) {
+                            acc[customer.branch].churn += 1;
+                        } else {
+                            acc[customer.branch].notChurn += 1;
+                        }
+                        return acc;
+                    }, {});
+
+                    const branches = Object.keys(branchChurnCount);
+                    const churnCounts = branches.map(branch => branchChurnCount[branch].churn);
+                    const notChurnCounts = branches.map(branch => branchChurnCount[branch].notChurn);
+
+                    if (this.charts.branchChurnBar) {
+                        this.charts.branchChurnBar.destroy();
+                    }
+
+                    this.charts.branchChurnBar = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: branches,
+                            datasets: [
+                                {
+                                    label: 'Churn',
+                                    data: churnCounts,
+                                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Not Churn',
+                                    data: notChurnCounts,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            return context.dataset.label + ': ' + context.raw;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+
+                updateProductCategoryPie() {
+                    const ctx = document.getElementById('productCategoryPie').getContext('2d');
+
+                    const categoryCounts = this.data.reduce((acc, customer) => {
+                        acc[customer.product_category] = (acc[customer.product_category] || 0) + 1;
+                        return acc;
+                    }, {});
+
+                    const labels = Object.keys(categoryCounts);
+                    const data = Object.values(categoryCounts);
+
+                    if (this.charts.productCategoryPie) {
+                        this.charts.productCategoryPie.destroy();
+                    }
+
+                    this.charts.productCategoryPie = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Product Category Distribution',
+                                data: data,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)',
+                                    'rgba(255, 206, 86, 0.5)',
+                                    'rgba(75, 192, 192, 0.5)',
+                                    'rgba(153, 102, 255, 0.5)',
+                                    'rgba(255, 159, 64, 0.5)'
+                                ],
+                                borderColor: '#fff',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ' + context.raw + ' (' + Math.round(context.raw / data.reduce((a, b) => a + b, 0) * 100) + '%)';
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', app);
+        });
+    </script>
+</body>
+
+</html>
