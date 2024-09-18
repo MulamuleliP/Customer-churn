@@ -1,24 +1,127 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ userName: 'Group 11' }">
+<html lang="en" x-data="{ userName: 'Innovative Solutions' }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Screen</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .menu-icon {
+            display: none; /* Hide the menu icon for always-visible menu */
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            border-right: 2px solid #007BFF;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+            padding-top: 60px;
+            list-style-type: none;
+            margin: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Make sure menu is visible */
+        }
+
+        .nav-menu li {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .nav-menu li a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-left: 270px; /* Adjust container margin to avoid overlap with the menu */
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .decorative-image {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .footer h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-menu {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                box-shadow: none;
+            }
+
+            .container {
+                margin-left: 0; /* Remove margin on smaller screens */
+            }
+        }
+    </style>
 </head>
 <body>
+    <ul class="nav-menu">
+        <li><a href="#home">Home Page</a></li>
+        <li><a href="new-client.html">Add New Client</a></li>
+        <li><a href="machine-learning.html">Machine Learning</a></li>
+        <li><a href="customer-int.html">Customer Interaction</a></li>
+    </ul>
     <div class="container">
-        <h1>Welcome, <span x-text="userName"></span>!</h1>
-        <nav>
-            <ul>
-                <li><a href="#home" class="link">Home Page</a></li>
-                <li><a href="new-client.html" class="link">Add New Client</a></li>
-                <li><a href="machine-learning.html" class="link">Machine Learning</a></li>
-                <li><a href="customer-int.html" class="link">Customer Interaction</a></li>
-            </ul>
-        </nav>
+        <h1>Welcome to <span x-text="userName"></span>!</h1>
+        <img src="https://www.pngkey.com/png/detail/746-7465989_trusted-by-some-of-south-africas-most-popular.png" alt="Trusted by South Africa's Most Popular" class="decorative-image">
     </div>
-    
+
+    <div class="footer">
+        <h2>Innovative Solutions Inc.</h2>
+        <p>&copy; 2024 All rights reserved.</p>
+    </div>
+
     <script src="https://unpkg.com/alpinejs" defer></script>
 </body>
 </html>
