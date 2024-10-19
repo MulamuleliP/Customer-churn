@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://media.licdn.com/dms/image/D5612AQE6YqoChL8gFA/article-cover_image-shrink_720_1280/0/1678821408829?e=2147483647&v=beta&t=-d06N6GnsKosKNk4BOelqli0xx5zDcbgmvEqy9U93yY') !important;
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  .navbar {
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  nav ul li {
+    margin: 0 15px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .hero {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 100px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-content {
+    max-width: 500px;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
+  }
+  
+  .cta-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #ff6633;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+  }
+  
+  .image-container img {
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .stats {
+    padding: 50px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .stat {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .stat-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .stat-box {
+    text-align: center;
+  }
+  
+  .stat-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .stat-box p {
+    font-size: 2rem;
+    color: #ff6633;
+  }
+  
+  .cta-section {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" x-data="{ userName: 'Innovative Solutions' }">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,52 +10,39 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            /* background-color: #f4f4f4; */
+            background-image: url('https://media.licdn.com/dms/image/D5612AQE6YqoChL8gFA/article-cover_image-shrink_720_1280/0/1678821408829?e=2147483647&v=beta&t=-d06N6GnsKosKNk4BOelqli0xx5zDcbgmvEqy9U93yY');
+
             color: #333;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
 
-        .menu-icon {
-            display: none; /* Hide the menu icon for always-visible menu */
-        }
 
-        .nav-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
+        .navbar {
             background-color: #fff;
-            border-right: 2px solid #007BFF;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
-            padding-top: 60px;
-            list-style-type: none;
-            margin: 0;
-            z-index: 1000;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        nav ul {
+            list-style: none;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            /* Make sure menu is visible */
+            justify-content: flex-end;
         }
 
-        .nav-menu li {
-            margin: 20px 0;
-            text-align: center;
+        nav ul li {
+            margin: 0 15px;
         }
 
-        .nav-menu li a {
+        nav ul li a {
             text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .nav-menu li a:hover {
-            text-decoration: underline;
+            color: #333;
         }
 
         .container {
-            margin-left: 270px; /* Adjust container margin to avoid overlap with the menu */
+            margin-left: 270px;
+            /* Adjust container margin to avoid overlap with the menu */
             padding: 20px;
         }
 
@@ -74,7 +62,7 @@
         .footer {
             text-align: center;
             padding: 10px;
-            background-color: #007BFF;
+            background-color: #ffca28;
             color: #fff;
             position: fixed;
             width: 100%;
@@ -100,21 +88,28 @@
             }
 
             .container {
-                margin-left: 0; /* Remove margin on smaller screens */
+                margin-left: 0;
+                /* Remove margin on smaller screens */
             }
         }
     </style>
 </head>
+
 <body>
-    <ul class="nav-menu">
-        <li><a href="#home">Home Page</a></li>
-        <li><a href="new-client.html">Add New Client</a></li>
-        <li><a href="machine-learning.html">Machine Learning</a></li>
-        <li><a href="customer-int.html">Customer Interaction</a></li>
-    </ul>
+    <header class="navbar">
+        <nav>
+            <ul>
+                <li><a href="#home">Home Page</a></li>
+                <li><a href="new-client.html">Add New Client</a></li>
+                <li><a href="machine-learning.html">Predictive Analytics</a></li>
+                <li><a href="customer-int.html">Customer Interaction</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
-        <h1>Welcome to <span x-text="userName"></span>!</h1>
-        <img src="https://www.pngkey.com/png/detail/746-7465989_trusted-by-some-of-south-africas-most-popular.png" alt="Trusted by South Africa's Most Popular" class="decorative-image">
+        <!-- <h1>Welcome to <span x-text="userName"></span>!</h1> -->
+        <!-- <img src="https://www.pngkey.com/png/detail/746-7465989_trusted-by-some-of-south-africas-most-popular.png" alt="Trusted by South Africa's Most Popular" class="decorative-image"> -->
     </div>
 
     <div class="footer">
@@ -124,4 +119,5 @@
 
     <script src="https://unpkg.com/alpinejs" defer></script>
 </body>
+
 </html>
