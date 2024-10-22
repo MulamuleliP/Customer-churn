@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { dataset } from './dataset.js';  // Import dataset
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { parse } from 'csv';
+import fs from 'fs';
 
 
 
@@ -21,6 +22,20 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'loggin')));
 
+// read csv dataset file data and push all the rows inside dataset array.
+const dataset = [];
+fs.createReadStream("./archivetempsupermarket_churnData.csv")
+  .pipe(parse({ delimiter: ",", from_line: 2 }))
+  .on("data", function (row) {
+    dataset.push(row);
+  })
+  .on("end", function () {
+    console.log("finished");
+  })
+  .on("error", function (error) {
+    console.log(error.message);
+  });
+
 // GET endpoint to fetch customer data
 app.get('/api/customers', (req, res) => {
   res.json(dataset);
@@ -36,7 +51,7 @@ app.post('/api/customers', (req, res) => {
 
 // API endpoint to get the data
 app.get('/api/data', (req, res) => {
-  res.setHeader('Content-Type', 'application/json'); // Ensure the correct MIME type
+  res.setHeader('Content-Type', 'application/json');
   res.json(dataset);
 });
 
@@ -59,27 +74,8 @@ app.post('/api/predict-all', (req, res) => {
   res.json(predictions);
 });
 
-/*
-// POST endpoint for removing customers
-app.post('/api/delete', (req, res) => {
-  const { customerId } = req.body;
-  if (typeof customerId !== 'number') {
-    return res.status(400).send('Invalid customer ID');
-  }
-  
-  const initialLength = dataset.length;
-  dataset = dataset.filter(c => c.customer_id !== customerId);
-  
-  if (dataset.length < initialLength) {
-      res.status(204).end(); // No content to return
-  } else {
-      res.status(404).send('Customer not found');
-  }
-});
-*/
 
-
-const port = 3730;
+const port = process.env.PORT || 3730;
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

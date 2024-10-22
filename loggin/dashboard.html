@@ -13,7 +13,7 @@
             padding: 20px;
         }
         canvas {
-            max-width: 600px;
+            max-width: 800px; /* Adjusted max width */
             margin: 20px auto;
         }
         .chart-container {
@@ -39,6 +39,24 @@
         <canvas id="branchChart"></canvas>
     </div>
 
-    <script src="script.js"></script>
+    <div class="chart-container">
+        <h2>Product Category vs Customer Churn</h2>
+        <canvas id="productChart" width="800" height="400"></canvas> 
+    </div>
+<!--
+    <div class="chart-container">
+        <h2>Monthly Charges by Churn</h2>
+        <canvas id="monthlyChargesHistogram" width="800" height="400"></canvas>
+    </div>
+
+    <div>
+        <h2>Distribution for Each Numerical Feature</h2>
+        <div id="charts-container"></div>
+    </div>
+-->
+    
+    <script src="dashboard.js"></script>
 </body>
 </html>
+
+

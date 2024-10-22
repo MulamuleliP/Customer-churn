@@ -1,3 +1,6 @@
 __MACOSX
 .vscode
 node_modules
+.conda
+.churn
+__pycache__
