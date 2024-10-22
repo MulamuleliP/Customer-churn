@@ -121,4 +121,4 @@ def get_credit_score_distribution():
     return jsonify(credit_score_distribution)
 
 if __name__ == '__main__':
-    app.run(port=3730, debug=True)
+    app.run(port=3730)
