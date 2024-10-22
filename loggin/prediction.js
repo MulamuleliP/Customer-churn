@@ -1,20 +1,23 @@
+// const apiUrl = 'http://127.0.0.1:3730'; // api base url for local dev
+const apiUrl = 'https://customer-churn-2.onrender.com'; // api base url for deployed
+
 async function fetchChurnData() {
-    const response = await fetch('http://localhost:3730/api/churn');
+    const response = await fetch(`${apiUrl}/api/churn`);
     return await response.json();
 }
 
 async function fetchCreditScoreDistribution() {
-    const response = await fetch('http://localhost:3730/api/credit-score-distribution');
+    const response = await fetch(`${apiUrl}/api/credit-score-distribution`);
     return await response.json();
 }
 
 async function fetchTenureDistribution() {
-    const response = await fetch('http://localhost:3730/api/tenure-distribution');
+    const response = await fetch(`${apiUrl}/api/tenure-distribution`);
     return await response.json();
 }
 
 async function fetchChurnByBranch() {
-    const response = await fetch('http://localhost:3730/api/churn-by-branch');
+    const response = await fetch(`${apiUrl}/api/churn-by-branch`);
     return await response.json();
 }
 
