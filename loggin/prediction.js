@@ -1,5 +1,5 @@
-// const apiUrl = 'http://127.0.0.1:3730'; // api base url for local dev
-const apiUrl = 'https://customer-churn-2.onrender.com'; // api base url for deployed
+ const apiUrl = 'http://127.0.0.1:3730'; // api base url for local dev
+// const apiUrl = 'https://customer-churn-2.onrender.com'; // api base url for deployed
 
 async function fetchChurnData() {
     const response = await fetch(`${apiUrl}/api/churn`);
